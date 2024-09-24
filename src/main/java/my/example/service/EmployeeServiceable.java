@@ -2,10 +2,11 @@ package my.example.service;
 
 import java.util.List;
 
+import my.example.dao.OrmDao;
 import my.example.model.Employee;
 
 
-public interface EmployeeServiceable {
+public interface EmployeeServiceable extends OrmDao<Employee> {
 
 	public void add(Employee employee);
 
@@ -13,7 +14,7 @@ public interface EmployeeServiceable {
 
 	public int delete(String id);
 
-	public int update(Employee employee);
+	public void update(Employee employee);
 
 	public List<Employee> getEmployees(int size);
 }

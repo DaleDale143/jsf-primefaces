@@ -7,10 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
 import com.github.javafaker.Faker;
 
 import lombok.extern.slf4j.Slf4j;
+import my.example.dao.AbstractJpa;
+import my.example.jpa.AppDbService;
 import my.example.model.Employee;
 import my.example.service.EmployeeServiceable;
 import my.example.service.qulifier.Repository;
@@ -18,7 +22,28 @@ import my.example.service.qulifier.Repository;
 @Slf4j
 @ApplicationScoped
 @Repository(name = Repository.MEMORY)
-public class EmployeeServiceMemory implements EmployeeServiceable {
+public class EmployeeServiceMemory extends AbstractJpa<Employee> implements EmployeeServiceable {
+	
+	// ---- for Unit Test
+		private EntityManager em;
+
+		public EmployeeServiceMemory(EntityManager em) {
+			this.setClazz(Employee.class);
+			this.em = em;
+		}
+
+		// --- after create new class
+		@Inject
+		protected AppDbService db;
+
+		@Override
+		public EntityManager getEm() {
+			return (this.em != null) ? em : db.getEm();
+		}
+
+		public EmployeeServiceMemory() {
+			this.setClazz(Employee.class);
+		}
 
 	private static Map<String, Employee> employeeMap = new HashMap<>();
 
@@ -28,12 +53,10 @@ public class EmployeeServiceMemory implements EmployeeServiceable {
 		employeeMap.put(employee.getId(), employee);
 	}
 
-	public int update(Employee employee) {
+	public void update(Employee employee) {
 		if (employeeMap.containsKey(employee.getId())) {
 			employeeMap.put(employee.getId(), employee);
-			return 1;
 		} else {
-			return 0;
 		}
 	}
 
