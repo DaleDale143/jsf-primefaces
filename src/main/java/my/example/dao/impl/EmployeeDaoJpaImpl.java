@@ -7,15 +7,12 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import my.example.dao.AbstractJpa;
 import my.example.dao.EmployeeDao;
 import my.example.jpa.AppDbService;
 import my.example.model.Employee;
 
-
 @ApplicationScoped
 public class EmployeeDaoJpaImpl extends AbstractJpa<Employee> implements EmployeeDao {
-
 	// ---- for Unit Test
 	private EntityManager em;
 
@@ -36,7 +33,7 @@ public class EmployeeDaoJpaImpl extends AbstractJpa<Employee> implements Employe
 	public EmployeeDaoJpaImpl() {
 		this.setClazz(Employee.class);
 	}
-
+	
 	// ---- implement DAO method
 
 	public List<Employee> findByName(String name) {
@@ -48,5 +45,4 @@ public class EmployeeDaoJpaImpl extends AbstractJpa<Employee> implements Employe
 		query = this.getEm().createQuery(sb.toString(), Employee.class).setParameter("firstName", name);
 		return query.getResultList();
 	}
-
 }

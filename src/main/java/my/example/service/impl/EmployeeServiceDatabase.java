@@ -4,10 +4,7 @@ import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
-import lombok.extern.slf4j.Slf4j;
-import my.example.dao.AbstractJpa;
 import my.example.dao.EmployeeDao;
 import my.example.jpa.AppDbService;
 import my.example.model.Employee;
@@ -15,33 +12,17 @@ import my.example.service.EmployeeServiceable;
 import my.example.service.qulifier.Repository;
 
 @ApplicationScoped
-@Slf4j
 @Repository(name = Repository.DATABASE)
-public class EmployeeServiceDatabase extends AbstractJpa<Employee> implements EmployeeServiceable {
-
-	// ---- for Unit Test
-	private EntityManager em;
-
-	public EmployeeServiceDatabase(EntityManager em) {
-		this.setClazz(Employee.class);
-		this.em = em;
-	}
+public class EmployeeServiceDatabase implements EmployeeServiceable {
 
 	// --- after create new class
 	@Inject
 	protected AppDbService db;
 
-	@Override
-	public EntityManager getEm() {
-		return (this.em != null) ? em : db.getEm();
-	}
-
-	public EmployeeServiceDatabase() {
-		this.setClazz(Employee.class);
-	}
 	
 	@Inject
-	private EmployeeDao employeeDao;
+	EmployeeDao employeeDao;
+
 
 	@Override
 	public void add(Employee employee) {
@@ -50,32 +31,45 @@ public class EmployeeServiceDatabase extends AbstractJpa<Employee> implements Em
 			employeeDao.create(employee);
 			db.commit();
 		} catch (Exception e) {
-			log.error("add Exception", e);
 			db.rollback();
 			throw e;
 		}
 	}
 
 	@Override
-	public int delete(String id) {
-		// TODO Auto-generated method stub
-		return 0;
+	public List<Employee> search(Employee empSearch) {
+		return employeeDao.findAll();
 	}
 
 	@Override
-	public void update(Employee employee) {
-		// TODO Auto-generated method stub
+	public void delete(String id) {
+		try {
+			db.begin();
+			employeeDao.deleteById(id);
+			db.commit();
+		} catch (Exception e) {
+			db.rollback();
+			throw e;
+		}
+	}
+	
+	@Override
+	public void update (Employee employee) {
+		try {
+			db.begin();
+			employeeDao.update(employee);
+			db.commit();
+		} catch (Exception e) {
+			db.rollback();
+			throw e;
+		}
 	}
 
 	@Override
 	public List<Employee> getEmployees(int size) {
-		// TODO Auto-generated method stub
-		return null;
+	    return employeeDao.findAll();
 	}
 
-	@Override
-	public List<Employee> search(Employee empSearch) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+
 }

@@ -10,12 +10,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-
 @ApplicationScoped
 public class EmfProducer implements EmfProducible, Serializable {
-	
 	private static final long serialVersionUID = 1L;
-	
 	private EntityManagerFactory emf;
 
 	@Override
@@ -23,7 +20,7 @@ public class EmfProducer implements EmfProducible, Serializable {
 	@ApplicationScoped
 	@Produces
 	public EntityManagerFactory produce() {
-		String emName = "employee_db";
+		String emName = "jpa";
 		if ((System.getProperty("catalina.home") != null)) {
 			emName = "jpa_tomcat";
 			if (Objects.isNull(this.emf)) {
@@ -40,6 +37,6 @@ public class EmfProducer implements EmfProducible, Serializable {
 	}
 
 	public static EntityManager createLocalEntityManager() {
-		return Persistence.createEntityManagerFactory("jpa_local").createEntityManager();
+		return Persistence.createEntityManagerFactory("jpa").createEntityManager();
 	}
 }

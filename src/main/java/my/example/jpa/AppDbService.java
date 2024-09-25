@@ -10,27 +10,20 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper=true)
+@EqualsAndHashCode(callSuper = true)
 @ApplicationScoped
-public class AppDbService extends JpaService{
- 
- /**
-  * 
-  */
- private static final long serialVersionUID = 1L;
+public class AppDbService extends JpaService {
+	private static final long serialVersionUID = 1L;
 
- // ---- for Unit Test
+	// ---- for Unit Test
+	public AppDbService() {
+	}
 
- public AppDbService(){
- }
- 
- public AppDbService(EntityManager em){
-  this.em = em;
- }
- 
- // --- after create new class
- 	@Inject
-    @AppDb
-    public EntityManager em;
+	public AppDbService(EntityManager em) {
+		this.em = em;
+	}
 
+	@Inject
+	@AppDb
+	private EntityManager em;
 }

@@ -102,6 +102,7 @@ public class CrudView implements Serializable {
         return this.selectedProducts != null && !this.selectedProducts.isEmpty();
     }
 
+
     public void deleteSelectedProducts() {
         this.products.removeAll(this.selectedProducts);
         this.selectedProducts = null;

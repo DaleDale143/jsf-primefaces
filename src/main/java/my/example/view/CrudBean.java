@@ -2,6 +2,7 @@ package my.example.view;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -31,9 +32,9 @@ public class CrudBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	 private static final String AGEUNDER_LIMIT = "อายุต้องมากกว่า 2 ปี";
-	 private static final String RECORFD_COMPELETE = "บันทึกข้อมูลเรียบร้อย";
-	 private static final String DELETE_COMPELETE = "ลบข้อมูลสำเร็จ";
+	private static final String AGEUNDER_LIMIT = "อายุต้องมากกว่า 2 ปี";
+	private static final String RECORFD_COMPELETE = "บันทึกข้อมูลเรียบร้อย";
+	private static final String DELETE_COMPELETE = "ลบข้อมูลสำเร็จ";
 
 	private String mode;
 	private Employee employeeCriteria;
@@ -48,9 +49,9 @@ public class CrudBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		mode = "R";
-//		employeeCriteria = new Employee();
-//		employeeList = service.getEmployees(1000);
-//		employeeList = service.search(employeeCriteria);
+		employeeCriteria = new Employee();
+		employeeList = service.getEmployees(1000);
+		employeeList = service.search(employeeCriteria);
 	}
 
 	public void searchBtnOnclick() {
